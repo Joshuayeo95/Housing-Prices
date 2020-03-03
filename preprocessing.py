@@ -314,11 +314,17 @@ print('Categorical variables have been simplified.')
 # Dropping variables that have been deemed to be unecessary after preprocessing
 vars_to_drop = ['Id', 'PoolArea', 'GarageYrBlt', 'BsmtFinSF2', 'SalePrice', 'LotFrontage', 'LotArea', 'GrLivArea',
 				'1stFlrSF', 'LowQualFinSF', 'OpenPorchSF', 'EnclosedPorch', '3SsnPorch', 'ScreenPorch', 'Street',
-				'Utilities', 'Condition2', 'RoofMatl', 'Heating', 'Fireplaces', 'GarageArea', 'GarageCond']
+				'Utilities', 'Condition2', 'RoofMatl', 'Heating', 'Fireplaces', 'GarageArea', 'GarageCond', 'MiscVal']
 
 print('The following {} variables will be dropped : {}'.format(len(vars_to_drop), vars_to_drop))
 
 df = df.drop(vars_to_drop, axis=1)
+
+### Converting columns to categorical data type and One Hot Encoding them ###
+obj_dtype_vars = df.select_dtypes(include=['object']).columns.tolist()
+dtype_dict = {element : 'category' for element in obj_dtype_vars}
+df = df.astype(dtype_dict)
+df = pd.get_dummies(df, drop_first=True)
 
 print('Preprocssing Complete!\nOur cleaned dataset has {} rows and {} columns.'.format(df.shape[0], df.shape[1]))
 
